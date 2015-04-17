@@ -43,16 +43,18 @@ class Server(ShowBase):
         self.delay = 0
         self.oldTime = 0
 
+        taskMgr.add(self.update, "Server Simulation")
+
 
     def update(self, task):
         
         nowTime = int(round(time.time() * 1000))
 
-        self.delay += (nowTime - self.lastTime) / 1000.0
-        self.lastTime = nowTime
+        self.delay += (nowTime - self.oldTime) / 1000.0
+        self.oldTime = nowTime
 
         if self.delay > self.tickTime:
-            print "Do Simulation"
+            #print "Do Simulation"
             self.delay = 0
 
         return Task.cont
