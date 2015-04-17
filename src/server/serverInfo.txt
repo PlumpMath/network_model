@@ -1,0 +1,3 @@
+Start Server:
+
+> python server.py (-window for window mode)
