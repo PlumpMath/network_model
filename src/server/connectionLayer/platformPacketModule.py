@@ -73,8 +73,6 @@ class PlatformPacketModule():
         """
         Return a datagram collection and type if data is available on
         the queued connection tcpReader
-        
-        @param qcr: self.tcpReader
         """
         if self.connectionManager.tcpReader.dataAvailable():
             datagram = NetDatagram()
