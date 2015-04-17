@@ -59,7 +59,9 @@ class ConnectionManager():
 
     def startTcpTasks(self):
     	taskMgr.add(self.pPacketModule.tcpListenerTask, "tcpListenerTask", -40)
+        print "TCP Listener Started"
     	taskMgr.add(self.pPacketModule.tcpReaderTask, "tcpReaderTask", -39)
+        print "TCP Reader Started"
 
 
         # Handle Datagrams

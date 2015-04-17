@@ -25,5 +25,6 @@ class ControlObject():
     	## Details ##
     	self.position = (0, 0, 0)
     	self.direction = (0, 0, 0)
-    	self.trigger = []
+    	self.triggers = []
     	self.lastMoveCmds = []
+        self.needsDatablockUpdate = True # First time only then set to False
