@@ -7,8 +7,8 @@ import sys
 
 ### PANDA Imports ###
 # from pandac.PandaModules import *
-from panda3d.core.Datagram import Datagram
-from panda3d.core.DatagramIterator import DatagramIterator
+from panda3d.core import Datagram
+from panda3d.core import DatagramIterator
 from direct.task.Task import Task
 
 ## Server Imports ##
@@ -92,7 +92,7 @@ class PlatformPacketModule():
             datagram = None
             data = None
             opcode = MSG_NONE
-            managerCode = Node
+            managerCode = None
             
         # Return the datagram to keep a handle on the data
         return (datagram, data, opcode, managerCode)

@@ -4,6 +4,7 @@
 ## IMPORTS ##
 import os
 import sys
+import time
 
 ### PANDA Imports ###
 from direct.showbase.ShowBase import ShowBase
@@ -34,7 +35,27 @@ class Server(ShowBase):
 
         # Stream Layer
         self.streamMgr = StreamManager(self)
+        
         # Simulation Layer
+
+        # Server tick rate
+        self.tickTime = 1.0 / 20
+        self.delay = 0
+        self.oldTime = 0
+
+
+    def update(self, task):
+        
+        nowTime = int(round(time.time() * 1000))
+
+        self.delay += (nowTime - self.lastTime) / 1000.0
+        self.lastTime = nowTime
+
+        if self.delay > self.tickTime:
+            print "Do Simulation"
+            self.delay = 0
+
+        return Task.cont
 
 server = Server()
 base.run()

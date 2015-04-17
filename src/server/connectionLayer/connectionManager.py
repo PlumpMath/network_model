@@ -33,9 +33,6 @@ class ConnectionManager():
     	# Ref to base
     	self.server = _server
 
-    	# Server tick rate
-    	self.tickTime = 1.0 / 20
-
     	self.activeConnections = []
 
 
