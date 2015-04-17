@@ -17,6 +17,9 @@ from direct.task.Task import Task
 # is a copy of an object persisted and transmitted to a remote 
 # host.
 
+# Ghost manager talks to client ghosts. Regarding data from the server
+# Control Objects
+
 
 class GhostManager():
     

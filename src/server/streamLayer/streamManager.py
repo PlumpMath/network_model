@@ -7,6 +7,7 @@ import sys
 
 ### PANDA Imports ###
 from direct.task.Task import Task
+from panda3d.core.Datagram import Datagram
 
 ## Server Imports ##
 from managerCodes import *
@@ -36,7 +37,28 @@ class StreamManager():
     	"""Read the packets and pass to the correct sub manager"""
     	
     	if _managerCode == MOVE_MANAGER:
-    		
+    		self.moveManager.readStreamPacket(_data, _client)
 
     	if _managerCode == GHOST_MANAGER:
     		pass
+
+
+    def buildPacket(self, _opcode, _managerCode):
+
+    	pkt = Datagram()
+    	pkt.addUint8(_opcode)
+
+    	if _managerCode == GHOST_MANAGER:
+    		pkt.addUint8(_managerCode)
+    		self.ghostManagerData(pkt)
+
+
+	def ghostManagerData(self, _packet, _data=[]):
+		"""Should add ghost manager data on the packet
+		packet:
+		opcode int8
+		managerCode int8
+		data...
+		"""
+		pkt = _packet
+		return pkt   	

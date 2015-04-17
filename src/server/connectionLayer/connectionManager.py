@@ -79,3 +79,7 @@ class ConnectionManager():
             print "Server: Opcode Data -", data
             
         return
+
+
+    def sendPacket(self, _data, _connection):
+    	pass
