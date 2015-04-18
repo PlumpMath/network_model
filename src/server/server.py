@@ -50,13 +50,14 @@ class Server(ShowBase):
         
         nowTime = int(round(time.time() * 1000))
 
-        self.delay += (nowTime - self.oldTime) / 1000.0
+        self.delay += (nowTime - self.oldTime) / 10000.0 #10000
         self.oldTime = nowTime
 
         if self.delay > self.tickTime:
             #print "Do Simulation"
             self.delay = 0
 
+            #print self.connectionMgr.activeConnections
         return Task.cont
 
 server = Server()

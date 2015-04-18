@@ -72,8 +72,9 @@ class ConnectionManager():
     def connectToServer(self, _serverAddress, _serverPort):
     	# This is just for the basics atm
 
-    	tcpConn = self.tcpManager.openTCPClientConnection(_serverAddress, _serverPort, clTIMEOUT)
+        tcpConn = self.tcpManager.openTCPClientConnection(_serverAddress, _serverPort, clTIMEOUT)
 
-    	if tcpConn != None:
-    		self.tcpConnection = tcpConn
+        if tcpConn != None:
+            self.tcpConnection = tcpConn
+            self.tcpConnection.setNoDelay(True)
     		# Send the first packet

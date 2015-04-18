@@ -35,18 +35,18 @@ class PlatformPacketModule():
         """
         # Handle new connection
         if self.connectionManager.tcpListener.newConnectionAvailable():
-        	rendezvous = PointerToConnection()
-        	netAddress = NetAddress()
-        	newConnection = PointerToConnection()
+            rendezvous = PointerToConnection()
+            netAddress = NetAddress()
+            newConnection = PointerToConnection()
 
-	        if self.connectionManager.tcpListener.getNewConnection(rendezvous, netAddress, newConnection):
-	            newConnection = newConnection.p()
-	            self.connectionManager.tcpReader.addConnection(newConnection)
-	            self.connectionManager.activeConnections.append(newConnection)
-	            
-	            print "Server: New Connection from -", str(netAddress.getIpString())
-	        else:
-	            print "Server: Connection Failed from -", str(netAddress.getIpString())
+            if self.connectionManager.tcpListener.getNewConnection(rendezvous, netAddress, newConnection):
+                newConnection = newConnection.p()
+                self.connectionManager.tcpReader.addConnection(newConnection)
+                self.connectionManager.activeConnections.append(newConnection)
+                print "Server: New Connection from -", str(netAddress.getIpString())
+
+            else:
+                print "Server: Connection Failed from -", str(netAddress.getIpString())
 
         return Task.cont
 
@@ -94,4 +94,23 @@ class PlatformPacketModule():
             
         # Return the datagram to keep a handle on the data
         return (datagram, data, opcode, managerCode)
+
+
+    # Handle Disconnects
+    def handleDisconnects(self, task):
+        """This is just a basic idea, and pretty brutal
+        TODO: Maybe get the ip of the connection that did the disconnect along with
+        removing any ingame objects belonging to that connection
+        """
+        # Handle Disconnections
+        if self.connectionManager.tcpManager.resetConnectionAvailable():
+            connection = PointerToConnection()
+            if self.connectionManager.tcpManager.getResetConnection(connection):
+                connection = connection.p()
+                if connection in self.connectionManager.activeConnections:
+                    self.connectionManager.tcpManager.closeConnection(connection)
+                    self.connectionManager.activeConnections.remove(connection)
+
+        return Task.again
+
 

@@ -16,7 +16,7 @@ from pandac.PandaModules import ConnectionWriter
 from direct.task.Task import Task
 
 ## Server Imports ##
-from config import svrTCPPORT, svrBACKLOG
+from config import svrHOSTNAME, svrTCPPORT, svrBACKLOG
 from platformPacketModule import PlatformPacketModule
 from opcodes import MSG_CLIENT_PACKET
 
@@ -52,8 +52,9 @@ class ConnectionManager():
     	self.tcpListener = QueuedConnectionListener(self.tcpManager, 0)
 
     	# TCP Socket
-    	self.tcpSocket = self.tcpManager.openTCPServerRendezvous(svrTCPPORT,
+    	self.tcpSocket = self.tcpManager.openTCPServerRendezvous(svrHOSTNAME, svrTCPPORT,
     						svrBACKLOG)
+        #self.tcpSocket.setNoDelay(True)
     	self.tcpListener.addConnection(self.tcpSocket)
 
 
@@ -62,6 +63,7 @@ class ConnectionManager():
         print "TCP Listener Started"
     	taskMgr.add(self.pPacketModule.tcpReaderTask, "tcpReaderTask", -39)
         print "TCP Reader Started"
+        taskMgr.add(self.pPacketModule.handleDisconnects, "HandleDisconnects", 50)
 
 
         # Handle Datagrams
