@@ -15,6 +15,7 @@ from direct.task.Task import Task
 ## Client Imports ##
 from platformPacketModule import PlatformPacketModule
 from opcodes import MSG_CLIENT_PACKET
+from config import clTIMEOUT
 
 ########################################################################
 
@@ -25,6 +26,7 @@ class ConnectionManager():
 
         # Ref to client
     	self.client = _client
+    	self.tcpConnection = None
 
 
     def start(self):
@@ -65,3 +67,13 @@ class ConnectionManager():
 
     def sendPacket(self, _data, _connection):
     	pass
+
+
+    def connectToServer(self, _serverAddress, _serverPort):
+    	# This is just for the basics atm
+
+    	tcpConn = self.tcpManager.openTCPClientConnection(_serverAddress, _serverPort, clTIMEOUT)
+
+    	if tcpConn != None:
+    		self.tcpConnection = tcpConn
+    		# Send the first packet

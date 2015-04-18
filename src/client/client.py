@@ -11,6 +11,7 @@ from direct.showbase.ShowBase import ShowBase
 from direct.task.Task import Task
 
 ## Client Imports ##
+from network.connectionManager import ConnectionManager
 
 
 ########################################################################
@@ -19,6 +20,11 @@ class Client(ShowBase):
     
     def __init__(self):
         ShowBase.__init__(self)
+
+        ### NETWORKING ###
+        self.connectionMgr = ConnectionManager(self)
+        self.connectionMgr.start()
+        self.connectionMgr.connectToServer('127.0.0.1', 5001)
 
 
     def update(self, task):

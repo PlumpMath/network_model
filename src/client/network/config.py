@@ -1,6 +1,5 @@
 #!/usr/bin/python
 
-### SERVER SETTINGS ###
-svrTCPPORT = 5001
-svrBACKLOG = 10
-svrUDPPORT = 6001
+### CLIENT SETTINGS ###
+clrUDPPORT = 6001
+clTIMEOUT = 3000

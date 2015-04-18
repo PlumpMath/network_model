@@ -6,7 +6,7 @@ import os
 import sys
 
 ### PANDA Imports ###
-# from pandac.PandaModules import *
+from pandac.PandaModules import PointerToConnection, NetAddress
 from panda3d.core import Datagram
 from panda3d.core import DatagramIterator
 from direct.task.Task import Task

@@ -27,3 +27,20 @@ class GhostObject():
     	self.triggers = []
     	self.lastMoveCmds = []
         self.needsDatablockUpdate = True # First time only then set to False
+
+
+class GhostControlObject():
+
+    def __init__(self,_ref, _id, _connection):
+        # This will be used for player/s
+        print "Ghost Control Object Created"
+
+        self.ref = _ref
+        self.id = _id
+
+        # Details
+        self.position = (0, 0, 0)
+        self.direction = (0, 0, 0)
+        self.triggers = []
+        self.lastMoveCmds = []
+        self.needsDatablockUpdate = True

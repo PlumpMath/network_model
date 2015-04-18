@@ -17,7 +17,7 @@ from opcodes import MSG_NONE
 
 ########################################################################
 
-class platformPacketModule():
+class PlatformPacketModule():
     
     def __init__(self, _connectionManager):
         print "Platform Packet Module Loaded"
