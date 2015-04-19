@@ -11,9 +11,9 @@ from panda3d.core import Datagram
 
 ## Client Imports ##
 from managerCodes import *
-from moveManager import MoveManager 
-from ghostManager import GhostManager
-from datablockManager import DatablockManager
+#from moveManager import MoveManager 
+#from ghostManager import GhostManager
+#from datablockManager import DatablockManager
 
 ########################################################################
 # The Stream manager passes the packets to the correct sub managers.
@@ -30,9 +30,9 @@ class StreamManager():
     	self.client = _client
 
     	# init Sub Managers
-    	self.moveManager = MoveManager(self)
-    	self.ghostManager = GhostManager(self)
-    	self.datablockManager = DatablockManager(self)
+    	#self.moveManager = MoveManager(self)
+    	#self.ghostManager = GhostManager(self)
+    	#self.datablockManager = DatablockManager(self)
 
 
     def handlePacket(self, _opcode, _managerCode):
@@ -47,6 +47,10 @@ class StreamManager():
     	if _managerCode == GHOST_MANAGER:
     		self.ghostManager.readStreamPacket(_data, _client)
 
+        if _managerCode == MOTD:
+            print "something"
+            self.readMOTD(_data)
+
 
     def buildPacket(self, _opcode, _managerCode):
 
@@ -58,6 +62,7 @@ class StreamManager():
     		self.ghostManagerData(pkt)
 
 
+
 	def ghostManagerData(self, _packet, _data=[]):
 		"""Should add ghost manager data on the packet
 		packet:
@@ -66,4 +71,8 @@ class StreamManager():
 		data...
 		"""
 		pkt = _packet
-		return pkt   	
+		return pkt
+
+
+    def readMOTD(self, _data):
+        print _data

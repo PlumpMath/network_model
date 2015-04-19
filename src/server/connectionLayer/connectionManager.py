@@ -33,8 +33,6 @@ class ConnectionManager():
     	# Ref to base
     	self.server = _server
 
-    	self.activeConnections = []
-
 
     def start(self):
     	self.pPacketModule = PlatformPacketModule(self)
@@ -63,7 +61,7 @@ class ConnectionManager():
         print "TCP Listener Started"
     	taskMgr.add(self.pPacketModule.tcpReaderTask, "tcpReaderTask", -39)
         print "TCP Reader Started"
-        taskMgr.add(self.pPacketModule.handleDisconnects, "HandleDisconnects", 50)
+        taskMgr.add(self.pPacketModule.handleDisconnects, "HandleDisconnects", 60)
 
 
         # Handle Datagrams
@@ -73,7 +71,7 @@ class ConnectionManager():
         """
         if opcode == MSG_CLIENT_PACKET:
         	self.server.streamMgr.handlePacket(_opcode, _managerCode, _data, _client)
-        	print _packetSize
+        	print "Packet Size:", _packetSize
 
         else:
             print "Server: BAD-opcode - %d" % opcode
@@ -84,3 +82,12 @@ class ConnectionManager():
 
     def sendPacket(self, _data, _connection):
     	pass
+
+
+    def sendMOTD(self, _connection):
+
+        # send MOTD
+        pkt = self.server.streamMgr.buildPacket(1)
+
+        self.tcpWriter.send(pkt, _connection)
+        print "send", pkt

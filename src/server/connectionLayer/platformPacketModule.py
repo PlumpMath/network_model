@@ -13,6 +13,8 @@ from direct.task.Task import Task
 
 ## Server Imports ##
 from opcodes import *
+from utils.util import generateUUID
+from clientObject import Client
 
 ########################################################################
 # The Connection Manager should handle reliable stuff with some custom udp /tcp mix,
@@ -42,7 +44,8 @@ class PlatformPacketModule():
             if self.connectionManager.tcpListener.getNewConnection(rendezvous, netAddress, newConnection):
                 newConnection = newConnection.p()
                 self.connectionManager.tcpReader.addConnection(newConnection)
-                self.connectionManager.activeConnections.append(newConnection)
+                #self.connectionManager.activeConnections.append(newConnection)
+                self.connectionManager.server.clients[generateUUID()] = Client(self.connectionManager.server, newConnection, netAddress)
                 print "Server: New Connection from -", str(netAddress.getIpString())
 
             else:
@@ -103,13 +106,17 @@ class PlatformPacketModule():
         removing any ingame objects belonging to that connection
         """
         # Handle Disconnections
+        
         if self.connectionManager.tcpManager.resetConnectionAvailable():
             connection = PointerToConnection()
             if self.connectionManager.tcpManager.getResetConnection(connection):
                 connection = connection.p()
-                if connection in self.connectionManager.activeConnections:
-                    self.connectionManager.tcpManager.closeConnection(connection)
-                    self.connectionManager.activeConnections.remove(connection)
+                for client in self.connectionManager.server.clients:
+                    if self.connectionManager.server.clients[client].connection == connection:
+                        self.connectionManager.tcpManager.closeConnection(self.connectionManager.server.clients[client].connection)
+                        print self.connectionManager.server.clients[client].netAddress.getIpString(), "Disconnected"
+                        del self.connectionManager.server.clients[client] # This will change, should clean out everything first
+                        break
 
         return Task.again
 

@@ -55,8 +55,7 @@ class ConnectionManager():
         Check for the handle assigned to the opcode.
         """
         if opcode == MSG_CLIENT_PACKET:
-        	self.server.streamMgr.handlePacket(_opcode, _managerCode, _data, _client)
-        	print _packetSize
+        	self.server.streamMgr.handlePacket(_opcode, _managerCode, _data)
 
         else:
             print "Client: BAD-opcode - %d" % opcode
@@ -78,3 +77,6 @@ class ConnectionManager():
             self.tcpConnection = tcpConn
             self.tcpConnection.setNoDelay(True)
     		# Send the first packet
+
+    def sendBasicInfo(self):
+        pass

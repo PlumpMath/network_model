@@ -13,6 +13,7 @@ from direct.task.Task import Task
 ## Server Imports ##
 from connectionLayer.connectionManager import ConnectionManager
 from streamLayer.streamManager import StreamManager
+from connectionLayer.config import svrMOTD
 
 ########################################################################
 
@@ -27,6 +28,12 @@ class Server(ShowBase):
             ShowBase.__init__(self)
         else:
             ShowBase(windowType = 'none')
+
+        # Msg of the day
+        self.motd = svrMOTD
+
+        ## Clients ##
+        self.clients = {}
 
         ### Setup the base modules ###
         # Connection Layer
@@ -57,7 +64,8 @@ class Server(ShowBase):
             #print "Do Simulation"
             self.delay = 0
 
-            #print self.connectionMgr.activeConnections
+            
+            #print self.clients
         return Task.cont
 
 server = Server()

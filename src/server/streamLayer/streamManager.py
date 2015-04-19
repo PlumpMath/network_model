@@ -48,7 +48,7 @@ class StreamManager():
     		self.ghostManager.readStreamPacket(_data, _client)
 
 
-    def buildPacket(self, _opcode, _managerCode):
+    def buildPacket(self, _opcode, _managerCode=None):
 
     	pkt = Datagram()
     	pkt.addUint8(_opcode)
@@ -56,6 +56,13 @@ class StreamManager():
     	if _managerCode == GHOST_MANAGER:
     		pkt.addUint8(_managerCode)
     		self.ghostManagerData(pkt)
+
+        else:
+            # For first reply: MOTD
+            pkt.addUint8(3)
+            pkt.addString(self.server.motd)
+
+        return pkt
 
 
 	def ghostManagerData(self, _packet, _data=[]):
