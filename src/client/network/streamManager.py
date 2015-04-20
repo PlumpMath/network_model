@@ -60,8 +60,8 @@ class StreamManager():
     		pkt.addUint8(_managerCode)
     		self.ghostManagerData(pkt)
 
-        else:
-            pkt.addUint8(3) # MOTD code
+        if _managerCode == MOTD:
+            pkt.addUint8(_managerCode) # MOTD code
 
         return pkt
 
@@ -83,3 +83,6 @@ class StreamManager():
 
         print "MOTD: ", motd
         print "ClientID: ", clientId
+
+        # Reply to server with the client name
+        self.client.connectionMgr.motdReply(self.client.name, clientId)

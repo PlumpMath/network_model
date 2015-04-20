@@ -25,6 +25,7 @@ class Client():
     	self.netAddress = _netAddress
 
     	# Control Object for this client
+        self.name = None
     	self.controlObject = None
 
     	# Ghost objects of this client? or near it

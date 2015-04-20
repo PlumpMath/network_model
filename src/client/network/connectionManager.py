@@ -84,3 +84,10 @@ class ConnectionManager():
 
         return False
 
+    def motdReply(self, _clientName, _clientId):
+        pkt = self.client.streamMgr.buildPacket(1, 3)
+        pkt.addString(_clientName)
+        pkt.addString(_clientId)
+        self.tcpWriter.send(pkt, self.tcpConnection)
+
+

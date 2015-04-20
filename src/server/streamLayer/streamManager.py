@@ -14,6 +14,7 @@ from managerCodes import *
 from moveManager import MoveManager 
 from ghostManager import GhostManager
 from datablockManager import DatablockManager
+from clientManager import ClientManager
 
 ########################################################################
 # The Stream manager passes the packets to the correct sub managers.
@@ -33,6 +34,7 @@ class StreamManager():
     	self.moveManager = MoveManager(self)
     	self.ghostManager = GhostManager(self)
     	self.datablockManager = DatablockManager(self)
+        self.clientManager = ClientManager(self)
 
 
     def handlePacket(self, _opcode, _managerCode, _data, _client):
@@ -46,6 +48,9 @@ class StreamManager():
 
     	if _managerCode == GHOST_MANAGER:
     		self.ghostManager.readStreamPacket(_data, _client)
+
+        if _managerCode == MOTD:
+            self.clientManager.readStreamPacket(_data, _client)
 
 
     def buildPacket(self, _opcode, _managerCode=None, _data=[]):
