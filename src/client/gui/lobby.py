@@ -36,7 +36,7 @@ class lobbyGUI():
             command = self.start)
 
         # create a back button
-        self.btnStart = DirectButton(
+        self.btnBack = DirectButton(
             # Scale and position
             scale = 0.15,
             pos = (-1,0,-0.90),
@@ -45,6 +45,17 @@ class lobbyGUI():
             # Frame
             # Functionality
             command = self.back)
+        self.hide()
+
+    def show(self):
+        self.lstLobby.show()
+        self.btnStart.show()
+        self.btnBack.show()
+
+    def hide(self):
+        self.lstLobby.hide()
+        self.btnStart.hide()
+        self.btnBack.hide()
 
     def start(self):
         #TODO: Send event or whatever to let the other parts know we can
@@ -62,10 +73,11 @@ class lobbyGUI():
             self.lstLobby.addItem(l)
 
 # TESTING
-#import direct.directbase.DirectStart
-#gui = lobbyGUI()
-#playerList = []
-#for i in range(20):
-#    playerList.append("Player-%02d" % (i+1))
-#gui.updateList(playerList)
-#base.run()
+import direct.directbase.DirectStart
+gui = lobbyGUI()
+playerList = []
+for i in range(20):
+    playerList.append("Player-%02d" % (i+1))
+gui.updateList(playerList)
+gui.show()
+base.run()
