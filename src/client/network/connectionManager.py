@@ -80,3 +80,7 @@ class ConnectionManager():
             self.tcpConnection.setNoDelay(True)
     		# Send the first packet
 
+            return True
+
+        return False
+

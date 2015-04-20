@@ -48,7 +48,7 @@ class StreamManager():
     		self.ghostManager.readStreamPacket(_data, _client)
 
 
-    def buildPacket(self, _opcode, _managerCode=None):
+    def buildPacket(self, _opcode, _managerCode=None, _data=[]):
 
     	pkt = Datagram()
     	pkt.addUint8(_opcode)
@@ -57,10 +57,9 @@ class StreamManager():
     		pkt.addUint8(_managerCode)
     		self.ghostManagerData(pkt)
 
-        else:
-            # For first reply: MOTD
-            pkt.addUint8(MOTD)
-            pkt.addString(self.server.motd)
+        if _managerCode == MOTD:
+            pkt.addUint8(_managerCode)
+            self.motdData(pkt, _data)
 
         return pkt
 
@@ -75,3 +74,15 @@ class StreamManager():
 		pkt = _packet
 		return pkt
 
+    def motdData(self, _packet, _data):
+        """Forward the server MOTD and the client created ID"""
+        pkt = _packet
+        pkt.addString(self.server.motd)
+        pkt.addString(_data)
+
+        return pkt
+
+
+    def buildDatablock(self):
+        #
+        pass

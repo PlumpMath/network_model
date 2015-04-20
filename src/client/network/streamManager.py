@@ -78,4 +78,8 @@ class StreamManager():
 
 
     def readMOTD(self, _data):
-        print _data
+        motd = _data.getString()
+        clientId = _data.getString()
+
+        print "MOTD: ", motd
+        print "ClientID: ", clientId

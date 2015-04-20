@@ -1,9 +1,13 @@
 from direct.gui.DirectGui import DirectButton
 from direct.gui.DirectGui import DirectEntry
 from panda3d.core import TextNode
+from lobby import lobbyGUI
 
 class connectGUI():
-    def __init__(self):
+    def __init__(self, _client):
+        # Ref
+        self.client = _client
+
         # create a host button
         self.btnConnect = DirectButton(
             # Scale and position
@@ -51,7 +55,15 @@ class connectGUI():
         """Function which will be called by pressing the connect button
         or hit enter while the focus is on the inut field"""
         if ip == None: ip = self.txtIP.get(True)
-        if ip == "": return
+        if ip != "":
+            if self.client.connectionMgr.connectToServer(ip, 5001):
+                gui = lobbyGUI(self.client)
+                self.client.gui.hide()
+                gui.show()
+            else:
+                return
+
+
 
 # TESTING
 #import direct.directbase.DirectStart

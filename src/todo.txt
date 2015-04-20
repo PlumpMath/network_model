@@ -6,6 +6,6 @@ Setup move codes to handle basic movment x, y  / no direction yet
 #### MIND FLOW ####
 
 Client Connect>
-Server makes client object, sends motd, sends datablock containing information about the current world
+Server makes client object, sends motd, sends datablock containing information about the current world including the clients player
 Client gets and reads motd.
 

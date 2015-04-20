@@ -44,8 +44,10 @@ class PlatformPacketModule():
             if self.connectionManager.tcpListener.getNewConnection(rendezvous, netAddress, newConnection):
                 newConnection = newConnection.p()
                 self.connectionManager.tcpReader.addConnection(newConnection)
-                self.connectionManager.server.clients[generateUUID()] = Client(self.connectionManager.server, newConnection, netAddress)
-                self.connectionManager.sendMOTD(newConnection) # Include First datablock for testing !!! REMOVE LATER !!!
+
+                clientId = generateUUID()
+                self.connectionManager.server.clients[clientId] = Client(self.connectionManager.server, newConnection, netAddress)
+                self.connectionManager.sendMOTD(newConnection, clientId) # Include First datablock for testing !!! REMOVE LATER !!!
                 print "Server: New Connection from -", str(netAddress.getIpString())
 
             else:

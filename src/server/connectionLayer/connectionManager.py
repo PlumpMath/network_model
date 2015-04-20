@@ -84,8 +84,8 @@ class ConnectionManager():
     	pass
 
 
-    def sendMOTD(self, _connection):
-        # send MOTD
-        pkt = self.server.streamMgr.buildPacket(2)
+    def sendMOTD(self, _connection, _clientId):
+        # send MOTD and Client ID
+        pkt = self.server.streamMgr.buildPacket(2, 3, _clientId)
 
         self.tcpWriter.send(pkt, _connection)

@@ -3,7 +3,12 @@ from direct.gui.DirectGui import DirectLabel
 from direct.gui.DirectGui import DirectButton
 
 class lobbyGUI():
-    def __init__(self):
+    def __init__(self, _client):
+
+        self.client = _client
+        self.playerList = []
+
+        # Visuals
         self.lstLobby = DirectScrolledList(
             decButton_pos= (1.1, 0, -0.45),
             decButton_text = "up",
@@ -73,11 +78,11 @@ class lobbyGUI():
             self.lstLobby.addItem(l)
 
 # TESTING
-import direct.directbase.DirectStart
-gui = lobbyGUI()
-playerList = []
-for i in range(20):
-    playerList.append("Player-%02d" % (i+1))
-gui.updateList(playerList)
-gui.show()
-base.run()
+#import direct.directbase.DirectStart
+#gui = lobbyGUI()
+#playerList = []
+#for i in range(20):
+#    playerList.append("Player-%02d" % (i+1))
+#gui.updateList(playerList)
+#gui.show()
+#base.run()
