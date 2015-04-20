@@ -62,7 +62,7 @@ class StreamManager():
 
         else:
             # For first reply: MOTD
-            pkt.addUint8(3)
+            pkt.addUint8(MOTD)
             pkt.addString(self.server.motd)
 
         return pkt
@@ -76,4 +76,5 @@ class StreamManager():
 		data...
 		"""
 		pkt = _packet
-		return pkt   	
+		return pkt
+

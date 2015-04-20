@@ -14,7 +14,7 @@ from direct.task.Task import Task
 
 ## Client Imports ##
 from platformPacketModule import PlatformPacketModule
-from opcodes import MSG_CLIENT_PACKET, MSG_SERVER_PACKET
+from opcodes import MSG_SERVER_PACKET
 from config import clTIMEOUT
 
 ########################################################################
@@ -78,9 +78,4 @@ class ConnectionManager():
             self.tcpReader.addConnection(tcpConn)
             self.tcpConnection.setNoDelay(True)
     		# Send the first packet
-            #self.sendBasicInfo()
 
-    def sendBasicInfo(self):
-        pkt = self.client.streamMgr.buildPacket(MSG_CLIENT_PACKET)
-
-        self.tcpWriter.send(pkt, self.tcpConnection)
