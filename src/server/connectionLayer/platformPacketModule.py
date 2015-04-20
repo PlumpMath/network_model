@@ -14,7 +14,7 @@ from direct.task.Task import Task
 ## Server Imports ##
 from opcodes import *
 from utils.util import generateUUID
-from clientObject import Client
+from simulationLayer.clientObject import Client
 
 ########################################################################
 # The Connection Manager should handle reliable stuff with some custom udp /tcp mix,
@@ -45,7 +45,7 @@ class PlatformPacketModule():
                 newConnection = newConnection.p()
                 self.connectionManager.tcpReader.addConnection(newConnection)
                 self.connectionManager.server.clients[generateUUID()] = Client(self.connectionManager.server, newConnection, netAddress)
-                self.connectionManager.sendMOTD(newConnection)
+                self.connectionManager.sendMOTD(newConnection) # Include First datablock for testing !!! REMOVE LATER !!!
                 print "Server: New Connection from -", str(netAddress.getIpString())
 
             else:

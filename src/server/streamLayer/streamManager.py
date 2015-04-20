@@ -47,9 +47,6 @@ class StreamManager():
     	if _managerCode == GHOST_MANAGER:
     		self.ghostManager.readStreamPacket(_data, _client)
 
-        if _managerCode == MOTD:
-            self.server.connectionMgr.sendMOTD(_client)
-
 
     def buildPacket(self, _opcode, _managerCode=None):
 

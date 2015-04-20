@@ -48,7 +48,6 @@ class StreamManager():
     		self.ghostManager.readStreamPacket(_data, _client)
 
         if _managerCode == MOTD:
-            print "something"
             self.readMOTD(_data)
 
 

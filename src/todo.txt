@@ -1,0 +1,11 @@
+# ToDO
+
+Setup move codes to handle basic movment x, y  / no direction yet
+
+
+#### MIND FLOW ####
+
+Client Connect>
+Server makes client object, sends motd, sends datablock containing information about the current world
+Client gets and reads motd.
+

@@ -14,6 +14,7 @@ from direct.task.Task import Task
 from connectionLayer.connectionManager import ConnectionManager
 from streamLayer.streamManager import StreamManager
 from connectionLayer.config import svrMOTD
+from simulationLayer.gameManager import GameManager
 
 ########################################################################
 
@@ -44,29 +45,8 @@ class Server(ShowBase):
         self.streamMgr = StreamManager(self)
         
         # Simulation Layer
+        self.gameMgr = GameManager(self)
 
-        # Server tick rate
-        self.tickTime = 1.0 / 20
-        self.delay = 0
-        self.oldTime = 0
-
-        taskMgr.add(self.update, "Server Simulation")
-
-
-    # Main for Simulation
-    def update(self, task):
-        nowTime = int(round(time.time() * 1000))
-
-        self.delay += (nowTime - self.oldTime) / 10000.0 #10000
-        self.oldTime = nowTime
-
-        if self.delay > self.tickTime:
-            #print "Do Simulation"
-            self.delay = 0
-
-            
-            #print self.clients
-        return Task.cont
 
 server = Server()
 base.run()
