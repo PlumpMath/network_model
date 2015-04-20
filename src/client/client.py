@@ -8,11 +8,11 @@ import time
 
 ### PANDA Imports ###
 from direct.showbase.ShowBase import ShowBase
-from direct.task.Task import Task
 
 ## Client Imports ##
 from network.connectionManager import ConnectionManager
 from network.streamManager import StreamManager
+from game import Game
 
 ########################################################################
 
@@ -35,11 +35,9 @@ class Client(ShowBase):
         # Do connect
         self.connectionMgr.connectToServer('127.0.0.1', 5001)
 
+        # Called when the game actually starts
+        self.game = Game(self)
 
-
-    def update(self, task):
-
-        return Task.cont
 
 client = Client()
 base.run()

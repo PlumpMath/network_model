@@ -53,8 +53,8 @@ class Server(ShowBase):
         taskMgr.add(self.update, "Server Simulation")
 
 
+    # Main for Simulation
     def update(self, task):
-        
         nowTime = int(round(time.time() * 1000))
 
         self.delay += (nowTime - self.oldTime) / 10000.0 #10000

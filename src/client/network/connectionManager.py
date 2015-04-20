@@ -64,7 +64,8 @@ class ConnectionManager():
         return
 
 
-    def sendPacket(self, _data, _connection):
+    # This should have a send rate limit!
+    def sendPackets(self, _data, _connection):
     	pass
 
 
