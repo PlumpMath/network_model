@@ -28,10 +28,13 @@ class Client(ShowBase):
         # Connection Layer
         self.connectionMgr = ConnectionManager(self)
         self.connectionMgr.start()
-        self.connectionMgr.connectToServer('127.0.0.1', 5001)
 
         # Stream Layer
         self.streamMgr = StreamManager(self)
+
+        # Do connect
+        self.connectionMgr.connectToServer('127.0.0.1', 5001)
+
 
 
     def update(self, task):

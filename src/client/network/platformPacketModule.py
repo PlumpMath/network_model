@@ -7,7 +7,7 @@ import sys
 import time
 
 ### PANDA Imports ###
-from panda3d.core import Datagram
+from panda3d.core import Datagram, NetDatagram
 from panda3d.core import DatagramIterator
 from direct.task.Task import Task
 

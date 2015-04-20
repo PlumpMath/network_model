@@ -69,13 +69,13 @@ class ConnectionManager():
         """
         Check for the handle assigned to the opcode.
         """
-        if opcode == MSG_CLIENT_PACKET:
+        if _opcode == MSG_CLIENT_PACKET:
         	self.server.streamMgr.handlePacket(_opcode, _managerCode, _data, _client)
         	print "Packet Size:", _packetSize
 
         else:
-            print "Server: BAD-opcode - %d" % opcode
-            print "Server: Opcode Data -", data
+            print "Server: BAD-opcode - %d" % _opcode
+            print "Server: Opcode Data -", _data
             
         return
 
@@ -87,7 +87,7 @@ class ConnectionManager():
     def sendMOTD(self, _connection):
 
         # send MOTD
-        pkt = self.server.streamMgr.buildPacket(1)
+        pkt = self.server.streamMgr.buildPacket(2)
 
         self.tcpWriter.send(pkt, _connection)
         print "send", pkt

@@ -6,7 +6,7 @@ import os
 import sys
 
 ### PANDA Imports ###
-from pandac.PandaModules import PointerToConnection, NetAddress
+from pandac.PandaModules import PointerToConnection, NetAddress, NetDatagram
 from panda3d.core import Datagram
 from panda3d.core import DatagramIterator
 from direct.task.Task import Task
@@ -44,8 +44,8 @@ class PlatformPacketModule():
             if self.connectionManager.tcpListener.getNewConnection(rendezvous, netAddress, newConnection):
                 newConnection = newConnection.p()
                 self.connectionManager.tcpReader.addConnection(newConnection)
-                #self.connectionManager.activeConnections.append(newConnection)
                 self.connectionManager.server.clients[generateUUID()] = Client(self.connectionManager.server, newConnection, netAddress)
+                self.connectionManager.sendMOTD(newConnection)
                 print "Server: New Connection from -", str(netAddress.getIpString())
 
             else:

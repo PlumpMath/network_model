@@ -14,7 +14,7 @@ from direct.task.Task import Task
 
 ## Client Imports ##
 from platformPacketModule import PlatformPacketModule
-from opcodes import MSG_CLIENT_PACKET
+from opcodes import MSG_CLIENT_PACKET, MSG_SERVER_PACKET
 from config import clTIMEOUT
 
 ########################################################################
@@ -54,12 +54,12 @@ class ConnectionManager():
         """
         Check for the handle assigned to the opcode.
         """
-        if opcode == MSG_CLIENT_PACKET:
-        	self.server.streamMgr.handlePacket(_opcode, _managerCode, _data)
+        if _opcode == MSG_SERVER_PACKET:
+        	self.client.streamMgr.handlePacket(_opcode, _managerCode, _data)
 
         else:
-            print "Client: BAD-opcode - %d" % opcode
-            print "Client: Opcode Data -", data
+            print "Client: BAD-opcode - %d" % _opcode
+            print "Client: Opcode Data -", _data
             
         return
 
@@ -75,8 +75,12 @@ class ConnectionManager():
 
         if tcpConn != None:
             self.tcpConnection = tcpConn
+            self.tcpReader.addConnection(tcpConn)
             self.tcpConnection.setNoDelay(True)
     		# Send the first packet
+            #self.sendBasicInfo()
 
     def sendBasicInfo(self):
-        pass
+        pkt = self.client.streamMgr.buildPacket(MSG_CLIENT_PACKET)
+
+        self.tcpWriter.send(pkt, self.tcpConnection)

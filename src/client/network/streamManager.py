@@ -35,7 +35,7 @@ class StreamManager():
     	#self.datablockManager = DatablockManager(self)
 
 
-    def handlePacket(self, _opcode, _managerCode):
+    def handlePacket(self, _opcode, _managerCode, _data):
     	"""Read the packets and pass to the correct sub manager"""
 
     	if _managerCode == DATABLOCK_MANAGER:
@@ -52,7 +52,7 @@ class StreamManager():
             self.readMOTD(_data)
 
 
-    def buildPacket(self, _opcode, _managerCode):
+    def buildPacket(self, _opcode, _managerCode=None):
 
     	pkt = Datagram()
     	pkt.addUint8(_opcode)
@@ -61,6 +61,10 @@ class StreamManager():
     		pkt.addUint8(_managerCode)
     		self.ghostManagerData(pkt)
 
+        else:
+            pkt.addUint8(3) # MOTD code
+
+        return pkt
 
 
 	def ghostManagerData(self, _packet, _data=[]):
