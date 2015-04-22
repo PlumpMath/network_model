@@ -31,11 +31,12 @@ class GhostManager():
     	print _stringDataList
     	client = self.streamManager.client
 
-    	if self.streamManager.client.id == None:
-    		client.game.playerControlObject = GhostControlObject(client)
+    	if self.streamManager.client.id in _stringDataList:
+    		client.game.playerControlObject = GhostControlObject(client, client.id)
 
-    	else:pass
-    		#client.game.otherPlayerControlObjects.append(GhostControlObject())
+    	else:
+    		for clientId in _stringDataList:
+    			client.game.otherPlayerControlObjects.append(GhostControlObject(client, clientId))
 
 
 
