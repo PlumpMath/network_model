@@ -14,13 +14,12 @@ import sys
 
 class ControlObject():
     
-    def __init__(self, _ref, _id, _connection):
+    def __init__(self, _clientObject, _id):
     	print "Control Object Created"
 
-    	self.ref = _ref
+    	self.clientObject = _clientObject
 
     	self.id = _id
-    	self.connection = _connection
 
     	## Details ##
     	self.position = (0, 0, 0)

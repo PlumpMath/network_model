@@ -60,24 +60,17 @@ class StreamManager():
 
     	if _managerCode == GHOST_MANAGER:
     		pkt.addUint8(_managerCode)
-    		self.ghostManagerData(pkt)
+    		self.ghostManager.ghostManagerData(pkt)
 
         if _managerCode == MOTD:
             pkt.addUint8(_managerCode)
             self.motdData(pkt, _data)
 
+        if _managerCode == DATABLOCK_MANAGER:
+            pkt.addUint8(_managerCode)
+
         return pkt
 
-
-	def ghostManagerData(self, _packet, _data=[]):
-		"""Should add ghost manager data on the packet
-		packet:
-		opcode int8
-		managerCode int8
-		data...
-		"""
-		pkt = _packet
-		return pkt
 
     def motdData(self, _packet, _data):
         """Forward the server MOTD and the client created ID"""
@@ -88,6 +81,3 @@ class StreamManager():
         return pkt
 
 
-    def buildDatablock(self):
-        #
-        pass

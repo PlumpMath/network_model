@@ -80,8 +80,8 @@ class ConnectionManager():
         return
 
 
-    def sendPacket(self, _data, _connection):
-    	pass
+    def sendPacket(self, _packet, _connection):
+    	self.tcpWriter.send(_packet, _connection)
 
 
     def sendMOTD(self, _connection, _clientId):

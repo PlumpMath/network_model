@@ -34,3 +34,40 @@ class DatablockManager():
 
     def readStreamPacket(self, _data, _client):
     	pass
+
+
+    def buildDatablock(self, _clientConnection=None, _dataLength=0, _data=[]):
+    	pkt = self.streamManager.buildPacket(2, 2)
+        pkt.addUint8(_dataLength)
+
+    	for index in range(len(_data)):
+            pkt.addString(_data[index])
+
+    	return pkt
+
+
+
+    def sendPreGameData(self, _clientConnection):
+    	# Build a packet that contains all the needed data for this client
+    	# to create ghost object and the control object for that client.
+    	currectControlClientIds = []
+    	count = 0
+    	for client in self.streamManager.server.clients:
+    		if self.streamManager.server.clients[client].controlObject:
+    			count += 1
+    			currectControlClientIds.append(client)
+
+    	pkt = self.buildDatablock(_clientConnection, count, currectControlClientIds)
+
+        self.streamManager.server.connectionMgr.sendPacket(pkt, _clientConnection)
+
+    def broadcastNewClientUpdate(self, _clientId):
+        clients = self.streamManager.server.clients
+        clientName = clients[_clientId].name
+        data = [_clientId, clientName]
+        for client in clients:
+            if client != _clientId:
+                conn = clients[client].connection
+                pkt = self.buildDatablock(None, 1, data)
+                self.streamManager.server.connectionMgr.sendPacket(pkt, conn)
+    	

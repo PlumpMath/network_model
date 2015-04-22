@@ -11,9 +11,7 @@ from panda3d.core import Datagram
 
 ## Client Imports ##
 from managerCodes import *
-#from moveManager import MoveManager 
-#from ghostManager import GhostManager
-#from datablockManager import DatablockManager
+from datablockManager import DatablockManager
 
 ########################################################################
 # The Stream manager passes the packets to the correct sub managers.
@@ -30,22 +28,20 @@ class StreamManager():
     	self.client = _client
 
     	# init Sub Managers
-    	#self.moveManager = MoveManager(self)
-    	#self.ghostManager = GhostManager(self)
-    	#self.datablockManager = DatablockManager(self)
+    	self.datablockManager = DatablockManager(self)
 
 
     def handlePacket(self, _opcode, _managerCode, _data):
     	"""Read the packets and pass to the correct sub manager"""
 
     	if _managerCode == DATABLOCK_MANAGER:
-    		self.datablockManager.readStreamPacket(_data, _client)
+    		self.datablockManager.readStreamPacket(_data)
     	
     	if _managerCode == MOVE_MANAGER:
-    		self.moveManager.readStreamPacket(_data, _client)
+    		self.moveManager.readStreamPacket(_data)
 
     	if _managerCode == GHOST_MANAGER:
-    		self.ghostManager.readStreamPacket(_data, _client)
+    		self.ghostManager.readStreamPacket(_data)
 
         if _managerCode == MOTD:
             self.readMOTD(_data)
@@ -82,7 +78,7 @@ class StreamManager():
         clientId = _data.getString()
 
         print "MOTD: ", motd
-        print "ClientID: ", clientId
+        print "Local ClientID: ", clientId
 
         # Reply to server with the client name
         self.client.connectionMgr.motdReply(self.client.name, clientId)
