@@ -24,6 +24,7 @@ class Client(ShowBase):
 
         #
         self.name = "default"
+        self.id = None
 
         ### NETWORKING ###
         # Connection Layer

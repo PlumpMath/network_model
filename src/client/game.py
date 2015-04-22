@@ -27,6 +27,10 @@ class Game():
 	    # This should only be called when the actual game starts.
 	    #taskMgr.add(self.update, "Client Simulation")
 
+        self.playerControlObject = None
+        self.otherPlayerControlObjects = []
+        self.ghostObjects = []
+
     def update(self, task):
         nowTime = int(round(time.time() * 1000))
 

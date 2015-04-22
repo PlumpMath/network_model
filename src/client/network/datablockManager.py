@@ -28,5 +28,6 @@ class DatablockManager():
     	for x in range(datablockLength):
     		stringData = _data.getString()
     		stringDataList.append(stringData)
-
-    	print stringDataList
+            
+        # Create objects depending on information
+        self.streamManager.ghostManager.createGhostControlObject(stringDataList)

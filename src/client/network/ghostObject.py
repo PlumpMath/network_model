@@ -29,6 +29,7 @@ class GhostObject():
         self.needsDatablockUpdate = True # First time only then set to False
 
 
+# This will be used for players
 class GhostControlObject():
 
     def __init__(self,_ref, _id, _connection):
