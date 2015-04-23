@@ -34,7 +34,7 @@ class GhostControlObject():
 
     def __init__(self,_ref, _id):
         # This will be used for player/s
-        print "Ghost Control Object Created" + _id
+        print "Ghost Control Object Created " + _id
 
         self.ref = _ref
         self.id = _id

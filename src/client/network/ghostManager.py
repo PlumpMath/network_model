@@ -28,15 +28,13 @@ class GhostManager():
     	pass
 
     def createGhostControlObject(self, _stringDataList):
-    	print _stringDataList
     	client = self.streamManager.client
 
-    	if self.streamManager.client.id in _stringDataList:
-    		client.game.playerControlObject = GhostControlObject(client, client.id)
+    	for idx in _stringDataList:
+    		if idx == self.streamManager.client.id:
+    			client.game.playerControlObject = GhostControlObject(client, idx)
+    			print "We have a local client!"
 
-    	else:
-    		for clientId in _stringDataList:
-    			client.game.otherPlayerControlObjects.append(GhostControlObject(client, clientId))
-
-
-
+    		else:
+    			client.game.otherPlayerControlObjects.append(GhostControlObject(client, idx))
+    			print "We have a remote client!"
