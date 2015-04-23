@@ -32,12 +32,20 @@ class GhostObject():
 # This will be used for players
 class GhostControlObject():
 
-    def __init__(self,_ref, _id):
+    def __init__(self,_ref, _id, _local=False):
         # This will be used for player/s
-        print "Ghost Control Object Created " + _id
 
         self.ref = _ref
-        self.id = _id
+
+        # Split the id and name
+        tempIdName = _id.split(',')
+
+        print "Ghost Control Object Created " + tempIdName[0] + "With name: " + tempIdName[1]
+
+        
+        self.id = tempIdName[0]
+        self.isLocal = _local
+        self.name = None
 
         # Details
         self.position = (0, 0, 0)
@@ -45,3 +53,10 @@ class GhostControlObject():
         self.triggers = []
         self.lastMoveCmds = []
         self.needsDatablockUpdate = True
+
+        if self.isLocal:
+            self.name = self.ref.name
+        else:
+            self.name = tempIdName[1]
+
+        

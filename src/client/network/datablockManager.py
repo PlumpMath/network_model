@@ -23,11 +23,10 @@ class DatablockManager():
 
     def readStreamPacket(self, _data):
     	stringDataList = []
-
     	datablockLength = _data.getUint8()
     	for x in range(datablockLength):
-    		stringData = _data.getString()
-    		stringDataList.append(stringData)
+            stringData = _data.getString()
+            stringDataList.append(stringData)
             
         # Create objects depending on information
         self.streamManager.ghostManager.createGhostControlObject(stringDataList)

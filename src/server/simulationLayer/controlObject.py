@@ -15,7 +15,7 @@ import sys
 class ControlObject():
     
     def __init__(self, _clientObject, _id):
-    	print "Control Object Created"
+    	print "Control Object Created " + _id
 
     	self.clientObject = _clientObject
 
