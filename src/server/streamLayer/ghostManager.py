@@ -51,6 +51,7 @@ class GhostManager():
 
     	# Send the client an updated datablock containing info about the currect game state
     	self.streamManager.datablockManager.sendPreGameData(_clientConnection)
+        clientObj.controlObject.needsDatablockUpdate = False
 
     	if len(self.streamManager.server.clients) > 1:
     		self.streamManager.datablockManager.broadcastNewClientUpdate(_clientId)

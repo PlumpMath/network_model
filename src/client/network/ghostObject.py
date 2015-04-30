@@ -40,7 +40,7 @@ class GhostControlObject():
         # Split the id and name
         tempIdName = _id.split(',')
 
-        print "Ghost Control Object Created " + tempIdName[0] + "With name: " + tempIdName[1]
+        print "Ghost Control Object Created " + tempIdName[0] + " With name: " + tempIdName[1]
 
         
         self.id = tempIdName[0]
@@ -58,5 +58,17 @@ class GhostControlObject():
             self.name = self.ref.name
         else:
             self.name = tempIdName[1]
+
+
+        self.model = None
+        self.loadModel()
+
+
+    def loadModel(self, _model='player'):
+
+        model = loader.loadModel('assets/'+_model)
+        model.reparentTo(render)
+        self.model = model
+
 
         

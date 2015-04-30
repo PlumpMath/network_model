@@ -30,3 +30,12 @@ class Client():
 
     	# Ghost objects of this client? or near it
     	self.ghostObjects = []
+
+        # State
+        self.state = {}
+
+    def getState(self):
+
+        self.state['pos'] = self.controlObject.position
+
+        return self.state 

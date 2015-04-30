@@ -22,6 +22,7 @@ class ControlObject():
     	self.id = _id
 
     	## Details ##
+        self.gotCmdsFromClient = False
     	self.position = (0, 0, 0)
     	self.direction = (0, 0, 0)
     	self.triggers = []

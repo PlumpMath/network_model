@@ -29,6 +29,10 @@ class GameManager():
         taskMgr.add(self.update, "Server Simulation")
 
 
+        # Current control objects that need processing
+        self.currentControlObjects = []
+
+
     # Main for Simulation
     def update(self, task):
         nowTime = int(round(time.time() * 1000))
@@ -43,3 +47,23 @@ class GameManager():
             
             #print self.clients
         return Task.cont
+
+
+    # Basically players.
+    def processControlObjects(self):
+        
+        for controlObject in self.currentControlObjects:
+            pass
+
+
+    def serverStateSnapshot(self):
+        pass
+
+
+    def getClientControlObjStates(self):
+
+        states = []
+
+        for client in self.server.clients:
+            s = self.server.clients[client].getState()
+            states.append(s)

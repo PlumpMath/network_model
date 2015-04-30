@@ -28,3 +28,10 @@ class MoveManager():
 
     def readStreamPacket(self, _data, _client):
     	pass
+
+    def getMovementStates(self):
+    	#Get state for each player
+    	pass
+
+    def buildMovementPacket(self):
+    	pass
