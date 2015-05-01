@@ -9,7 +9,8 @@ import time
 ### PANDA Imports ###
 from direct.task.Task import Task
 
-## Server Imports ##
+## Client Imports ##
+from player.moveHandler import LocalHandler
 
 ########################################################################
 
@@ -24,21 +25,24 @@ class Game():
         self.delay = 0
         self.oldTime = 0
 
-	    # This should only be called when the actual game starts.
-	    #taskMgr.add(self.update, "Client Simulation")
+    # This should only be called when the actual game starts.    
+        taskMgr.add(self.update, "Client Simulation", -30)
 
         self.playerControlObject = None
         self.otherPlayerControlObjects = []
         self.ghostObjects = []
 
+        # Load local handler
+        self.localhandler = LocalHandler(self)
+
     def update(self, task):
         nowTime = int(round(time.time() * 1000))
 
-        self.delay += (nowTime - self.oldTime) / 10000.0 #10000
+        self.delay += (nowTime - self.oldTime) / 1000.0 #10000
         self.oldTime = nowTime
 
         if self.delay > self.tickTime:
-            #print "Do Simulation"
+            self.localhandler.doMovement()
             self.delay = 0
 
             
