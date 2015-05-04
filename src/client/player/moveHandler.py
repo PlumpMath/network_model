@@ -48,8 +48,9 @@ class LocalHandler():
     	return Task.cont
 
     def catchInput(self, task):
-        pkt = self.game.client.movementMgr.buildMovementPacket(self.oldInputCmds)
-        self.game.client.movementMgr.sendMovementPacket(pkt)
+    	if self.oldInputCmds != []:
+        	pkt = self.game.client.movementMgr.buildMovementPacket(self.oldInputCmds)
+        	self.game.client.movementMgr.sendMovementPacket(pkt)
         self.oldInputCmds = []
 
         return Task.again

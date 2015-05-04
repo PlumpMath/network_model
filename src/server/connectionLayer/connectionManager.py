@@ -70,8 +70,9 @@ class ConnectionManager():
         Check for the handle assigned to the opcode.
         """
         if _opcode == MSG_CLIENT_PACKET:
-        	self.server.streamMgr.handlePacket(_opcode, _managerCode, _data, _client)
-        	print "Packet Size:", _packetSize
+            self.server.streamMgr.handlePacket(_opcode, _managerCode, _data, _client)
+            print "Packet Size:", _packetSize
+            #print "Data:", _data
 
         else:
             print "Server: BAD-opcode - %d" % _opcode

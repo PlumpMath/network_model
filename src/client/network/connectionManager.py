@@ -101,7 +101,8 @@ class MovementManager():
 
     def buildMovementPacket(self, _data=[]):
         pkt = self.client.streamMgr.buildPacket(1, 0)
-        pkt.addString(str(_data))
+        moveStr = ''.join(_data)
+        pkt.addString(moveStr)
 
         return pkt
 
