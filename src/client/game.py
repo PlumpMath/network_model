@@ -46,3 +46,14 @@ class Game():
             self.delay = 0
             
         return Task.cont
+
+
+    def serverStates(self, _updateData):
+
+        for data in _updateData:
+            if data != self.client.id:
+                for cObj in self.otherPlayerControlObjects:
+                    if cObj.id == data:
+                        #print pos
+                        pos = _updateData[data]['pos']
+                        cObj.model.setPos(pos.getX(), pos.getY(), pos.getZ())

@@ -31,11 +31,21 @@ class Client():
     	# Ghost objects of this client? or near it
     	self.ghostObjects = []
 
-        # State
-        self.state = {}
+        # Movecmds
+        self.moveCmds = []
+
+
+    def start(self):
+        self.clientUpdateData = {}
+        self.clientUpdateData[self.controlObject.id] = {}
 
     def getState(self):
+        self.clientUpdateData[self.controlObject.id]['pos'] = self.controlObject.position
 
-        self.state['pos'] = self.controlObject.position
+        return self.clientUpdateData
 
-        return self.state 
+
+    def handleMovement(self, _timeStep):
+        if self.controlObject != None:
+            self.controlObject.doMovement(self.moveCmds, _timeStep)
+        self.moveCmds = []

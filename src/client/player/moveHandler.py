@@ -44,7 +44,10 @@ class LocalHandler():
         if inputState.isSet('backward'):
             player.model.setY(player.model, -speed * dt)
             self.oldInputCmds.append("+BACKWARD")
-    		
+
+        #if player != None:
+            #print player.model.getPos()
+    	
     	return Task.cont
 
     def catchInput(self, task):

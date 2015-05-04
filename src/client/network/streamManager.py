@@ -31,6 +31,7 @@ class StreamManager():
     	# init Sub Managers
     	self.datablockManager = DatablockManager(self)
         self.ghostManager = GhostManager(self)
+        self.movementManager = self.client.movementMgr
 
 
     def handlePacket(self, _opcode, _managerCode, _data):
@@ -40,7 +41,7 @@ class StreamManager():
     		self.datablockManager.readStreamPacket(_data)
     	
     	if _managerCode == MOVE_MANAGER:
-    		self.moveManager.readStreamPacket(_data)
+    		self.movementManager.readStreamPacket(_data)
 
     	if _managerCode == GHOST_MANAGER:
     		self.ghostManager.readStreamPacket(_data)

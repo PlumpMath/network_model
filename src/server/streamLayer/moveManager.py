@@ -28,11 +28,35 @@ class MoveManager():
 
     def readStreamPacket(self, _data, _client):
         moveData = _data.getString()
-        print self.streamManager.clientManager.clientConnectionLink[_client]
+        listMoveData = moveData.split('+')
+        # Add new cmds (which are actually old?)
+        del listMoveData[0]
+        self.streamManager.clientManager.clientConnectionLink[_client].moveCmds = listMoveData
 
-    def getMovementStates(self):
-    	#Get state for each player
-    	pass
 
-    def buildMovementPacket(self):
-    	pass
+    def buildMovementPacket(self, _data=[]):
+    	pkt = self.streamManager.buildPacket(2, 0)
+
+        length = len(_data)
+        pkt.addUint8(length)
+        for d in _data:
+            for i in d:
+                for coord in d[i]:
+                    # Add Client ID
+                    pkt.addString(i)
+
+                    pos =  d[i][coord]
+                    # Add Pos X
+                    pkt.addFloat32(pos.getX())
+                    # Add Pos Y
+                    pkt.addFloat32(pos.getY())
+                    # Add Pos Z
+                    pkt.addFloat32(pos.getZ())
+        
+        return pkt
+
+
+    def sendMovementUpdate(self, _data=[]):
+        pkt = self.buildMovementPacket(_data)
+        self.streamManager.server.connectionMgr.broadcastPacket(pkt)
+

@@ -29,10 +29,6 @@ class GameManager():
         taskMgr.add(self.update, "Server Simulation")
 
 
-        # Current control objects that need processing
-        self.currentControlObjects = []
-
-
     # Main for Simulation
     def update(self, task):
         nowTime = int(round(time.time() * 1000))
@@ -41,7 +37,10 @@ class GameManager():
         self.oldTime = nowTime
 
         if self.delay > self.tickTime:
+            dt = globalClock.getDt()
             #print "Do Simulation"
+            self.processControlObjects(dt)
+            self.broadcastControlObjStates()
             self.delay = 0
 
             
@@ -50,10 +49,15 @@ class GameManager():
 
 
     # Basically players.
-    def processControlObjects(self):
+    def processControlObjects(self, _timestep):
         
-        for controlObject in self.currentControlObjects:
-            pass
+        for client in self.server.clients:
+            # Update the movement
+            self.server.clients[client].handleMovement(_timestep)
+
+    def broadcastControlObjStates(self):
+        states = self.getClientControlObjStates()
+        self.server.streamMgr.moveManager.sendMovementUpdate(states)
 
 
     def serverStateSnapshot(self):
@@ -67,3 +71,5 @@ class GameManager():
         for client in self.server.clients:
             s = self.server.clients[client].getState()
             states.append(s)
+
+        return states

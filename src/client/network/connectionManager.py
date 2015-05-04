@@ -11,6 +11,7 @@ from pandac.PandaModules import QueuedConnectionManager
 from pandac.PandaModules import QueuedConnectionReader
 from pandac.PandaModules import ConnectionWriter
 from direct.task.Task import Task
+from panda3d.core import Vec3
 
 ## Client Imports ##
 from platformPacketModule import PlatformPacketModule
@@ -109,3 +110,24 @@ class MovementManager():
     def sendMovementPacket(self, pkt):
         conn = self.client.connectionMgr.tcpConnection
         self.client.connectionMgr.tcpWriter.send(pkt, conn)
+
+
+    def readStreamPacket(self, _data):
+        updateData = {}
+
+        packetLength = _data.getUint8()
+
+        if packetLength <= 1:
+            return
+
+        for x in range(packetLength):
+            # Cliend Id
+            cID = _data.getString()
+            updateData[cID] = {}
+            x = _data.getFloat32()
+            y = _data.getFloat32()
+            z = _data.getFloat32()
+            updateData[cID]['pos'] = Vec3(x, y, z)
+
+        self.client.game.serverStates(updateData)
+

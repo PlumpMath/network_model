@@ -84,6 +84,11 @@ class ConnectionManager():
     def sendPacket(self, _packet, _connection):
     	self.tcpWriter.send(_packet, _connection)
 
+    def broadcastPacket(self, _packet):
+        for client in self.server.clients:
+            conn = self.server.clients[client].connection
+            self.sendPacket(_packet, conn)
+
 
     def sendMOTD(self, _connection, _clientId):
         # send MOTD and Client ID

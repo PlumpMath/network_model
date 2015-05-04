@@ -48,6 +48,7 @@ class GhostManager():
     def createClientControlObject(self, _clientId, _clientConnection):
     	clientObj = self.streamManager.server.clients[_clientId]
     	clientObj.controlObject = ControlObject(clientObj, _clientId)
+        clientObj.start()
 
     	# Send the client an updated datablock containing info about the currect game state
     	self.streamManager.datablockManager.sendPreGameData(_clientConnection)

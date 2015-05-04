@@ -6,6 +6,7 @@ import os
 import sys
 
 ### PANDA Imports ###
+from panda3d.core import Vec3
 
 ## Server Imports ##
 
@@ -23,8 +24,28 @@ class ControlObject():
 
     	## Details ##
         self.gotCmdsFromClient = False
-    	self.position = (0, 0, 0)
+    	self.position = Vec3(0, 0, 0)
     	self.direction = (0, 0, 0)
     	self.triggers = []
     	self.lastMoveCmds = []
         self.needsDatablockUpdate = True # First time only then set to False
+
+    def doMovement(self, _cmds, _timestep):
+        dt = _timestep
+        speed = 5
+
+        for cmd in _cmds:
+            if cmd == 'FORWARD':
+                self.position.setY(self.position.getY() + speed * dt)
+
+            if cmd == 'LEFT':
+                self.position.setX(self.position.getX() - speed * dt)
+
+            if cmd == 'RIGHT':
+                self.position.setX(self.position.getX() + speed * dt)
+
+            if cmd == 'BACKWARD':
+                self.position.setY(self.position.getY() - speed * dt)
+
+        #print self.position
+

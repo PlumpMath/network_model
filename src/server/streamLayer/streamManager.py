@@ -58,6 +58,9 @@ class StreamManager():
     	pkt = Datagram()
     	pkt.addUint8(_opcode)
 
+        if _managerCode == MOVE_MANAGER:
+            pkt.addUint8(_managerCode)
+
     	if _managerCode == GHOST_MANAGER:
     		pkt.addUint8(_managerCode)
     		self.ghostManager.ghostManagerData(pkt)
