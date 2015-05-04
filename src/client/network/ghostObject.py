@@ -70,5 +70,22 @@ class GhostControlObject():
         model.reparentTo(render)
         self.model = model
 
+    def doMovement(self, _cmds, _timestep):
+        dt = _timestep
+        speed = 5
+
+        for cmd in _cmds:
+            if cmd == 'FORWARD':
+                self.position.setY(self.position.getY() + speed * dt)
+
+            if cmd == 'LEFT':
+                self.position.setX(self.position.getX() - speed * dt)
+
+            if cmd == 'RIGHT':
+                self.position.setX(self.position.getX() + speed * dt)
+
+            if cmd == 'BACKWARD':
+                self.position.setY(self.position.getY() - speed * dt)
+
 
         

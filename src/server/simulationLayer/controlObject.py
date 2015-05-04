@@ -36,16 +36,16 @@ class ControlObject():
 
         for cmd in _cmds:
             if cmd == 'FORWARD':
-                self.position.setY(self.position.getY() + speed * dt)
+                self.position.setY(self.position.getY()+ 0.1 + speed * dt)
 
             if cmd == 'LEFT':
-                self.position.setX(self.position.getX() - speed * dt)
+                self.position.setX(self.position.getX()- 0.1 - speed * dt)
 
             if cmd == 'RIGHT':
-                self.position.setX(self.position.getX() + speed * dt)
+                self.position.setX(self.position.getX()+ 0.1 + speed * dt)
 
             if cmd == 'BACKWARD':
-                self.position.setY(self.position.getY() - speed * dt)
+                self.position.setY(self.position.getY()- 0.1 - speed * dt)
 
         #print self.position
 
