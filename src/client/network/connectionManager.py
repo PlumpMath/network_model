@@ -91,3 +91,20 @@ class ConnectionManager():
         self.tcpWriter.send(pkt, self.tcpConnection)
 
 
+
+class MovementManager():
+
+    def __init__(self, _client):
+
+        self.client = _client
+
+
+    def buildMovementPacket(self, _data=[]):
+        pkt = self.client.streamMgr.buildPacket(1, 0)
+        pkt.addString(str(_data))
+
+        return pkt
+
+    def sendMovementPacket(self, pkt):
+        conn = self.client.connectionMgr.tcpConnection
+        self.client.connectionMgr.tcpWriter.send(pkt, conn)

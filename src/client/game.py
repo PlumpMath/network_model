@@ -19,6 +19,7 @@ class Game():
     
     def __init__(self, _client):
     	print "Game Module Loaded"
+        self.client = _client
 
     	# Server tick rate
         self.tickTime = 1.0 / 20
@@ -42,8 +43,6 @@ class Game():
         self.oldTime = nowTime
 
         if self.delay > self.tickTime:
-            self.localhandler.doMovement()
             self.delay = 0
-
             
         return Task.cont

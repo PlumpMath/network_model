@@ -56,23 +56,11 @@ class StreamManager():
 
     	if _managerCode == MOVE_MANAGER:
     		pkt.addUint8(_managerCode)
-    		self.ghostManagerData(pkt)
 
         if _managerCode == MOTD:
             pkt.addUint8(_managerCode) # MOTD code
 
         return pkt
-
-
-	def ghostManagerData(self, _packet, _data=[]):
-		"""Should add ghost manager data on the packet
-		packet:
-		opcode int8
-		managerCode int8
-		data...
-		"""
-		pkt = _packet
-		return pkt
 
 
     def readMOTD(self, _data):

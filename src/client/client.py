@@ -10,7 +10,7 @@ import time
 from direct.showbase.ShowBase import ShowBase
 
 ## Client Imports ##
-from network.connectionManager import ConnectionManager
+from network.connectionManager import ConnectionManager, MovementManager
 from network.streamManager import StreamManager
 from game import Game
 from gui.connect import connectGUI
@@ -30,6 +30,9 @@ class Client(ShowBase):
         # Connection Layer
         self.connectionMgr = ConnectionManager(self)
         self.connectionMgr.start()
+
+        # Movement Manager
+        self.movementMgr = MovementManager(self)
 
         # Stream Layer
         self.streamMgr = StreamManager(self)

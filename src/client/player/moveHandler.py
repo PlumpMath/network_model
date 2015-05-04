@@ -19,36 +19,37 @@ class LocalHandler():
 
         self.oldInputCmds = []
 
-        #taskMgr.add(self.doMovement,"updateMovement")
+        taskMgr.add(self.doMovement,"updateMovement")
         taskMgr.doMethodLater(0.1, self.catchInput, 'CatchInput')
 
 
 
-    def doMovement(self):
-    	#dt = globalClock.getDt()
-        speed = 200
+    def doMovement(self, task):
+    	dt = globalClock.getDt()
+        speed = 5
         player = self.game.playerControlObject
 
     	if inputState.isSet('forward'):
-            player.model.setY(player.model, speed * globalClock.getDt())
+            player.model.setY(player.model, speed * dt)
             self.oldInputCmds.append("+FORWARD")
 
         if inputState.isSet('left'):
-            player.model.setX(player.model, -speed * globalClock.getDt())
+            player.model.setX(player.model, -speed * dt)
             self.oldInputCmds.append("+LEFT")
 
         if inputState.isSet('right'):
-            player.model.setX(player.model, speed * globalClock.getDt())
+            player.model.setX(player.model, speed * dt)
             self.oldInputCmds.append("+RIGHT")
 
         if inputState.isSet('backward'):
-            player.model.setY(player.model, -speed * globalClock.getDt())
+            player.model.setY(player.model, -speed * dt)
             self.oldInputCmds.append("+BACKWARD")
     		
-    	#return Task.cont
+    	return Task.cont
 
     def catchInput(self, task):
-        #print "Send Input Cmds: ", self.oldInputCmds
+        pkt = self.game.client.movementMgr.buildMovementPacket(self.oldInputCmds)
+        self.game.client.movementMgr.sendMovementPacket(pkt)
         self.oldInputCmds = []
 
         return Task.again
