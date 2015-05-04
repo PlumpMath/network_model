@@ -21,9 +21,16 @@ class ClientManager():
     	# Stream manager ref
     	self.streamManager = _streamManager
 
+        # For simple handling of client packets, link the client connection to the client objects
+        self.clientConnectionLink = {}
+
     def readStreamPacket(self, _data, _clientConnection):
     	name = _data.getString()
     	clientId = _data.getString()
+
+        # Link the client Connection to the client Object
+        self.clientConnectionLink[_clientConnection] = self.streamManager.server.clients[clientId]
+
     	self.streamManager.server.clients[clientId].name = name
     	# Send msg to all players that player "name" connected
     	# Tell ghostManager that it needs to create objects for the client and the other clients on the server

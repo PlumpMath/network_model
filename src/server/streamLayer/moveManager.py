@@ -28,7 +28,7 @@ class MoveManager():
 
     def readStreamPacket(self, _data, _client):
         moveData = _data.getString()
-        print moveData
+        print self.streamManager.clientManager.clientConnectionLink[_client]
 
     def getMovementStates(self):
     	#Get state for each player

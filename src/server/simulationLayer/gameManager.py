@@ -37,7 +37,7 @@ class GameManager():
     def update(self, task):
         nowTime = int(round(time.time() * 1000))
 
-        self.delay += (nowTime - self.oldTime) / 10000.0 #10000
+        self.delay += (nowTime - self.oldTime) / 1000.0 #10000
         self.oldTime = nowTime
 
         if self.delay > self.tickTime:
