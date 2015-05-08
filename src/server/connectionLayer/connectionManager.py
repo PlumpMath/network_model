@@ -56,6 +56,13 @@ class ConnectionManager():
     	self.tcpListener.addConnection(self.tcpSocket)
 
 
+    def setupUdp(self):
+        # All udp 
+        self.udpManager = QueuedConnectionManager()
+        self.udpReader = QueuedConnectionReader(self.udpManager, 0)
+        self.udpWriter = ConnectionWriter(self.udpManager, 0)
+
+
     def startTcpTasks(self):
     	taskMgr.add(self.pPacketModule.tcpListenerTask, "tcpListenerTask", -40)
         print "TCP Listener Started"
@@ -63,7 +70,8 @@ class ConnectionManager():
         print "TCP Reader Started"
         taskMgr.add(self.pPacketModule.handleDisconnects, "HandleDisconnects", 60)
 
-
+    ### DELETE ###
+    '''
         # Handle Datagrams
     def passPacketToStreamMgr(self, _data, _opcode, _managerCode, _client, _packetSize):
         """
@@ -79,6 +87,7 @@ class ConnectionManager():
             print "Server: Opcode Data -", _data
             
         return
+    '''
 
 
     def sendPacket(self, _packet, _connection):

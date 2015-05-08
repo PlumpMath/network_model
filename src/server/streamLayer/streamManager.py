@@ -10,7 +10,7 @@ from direct.task.Task import Task
 from panda3d.core import Datagram
 
 ## Server Imports ##
-from managerCodes import *
+from connectionLayer.opcodes import *
 from moveManager import MoveManager 
 from ghostManager import GhostManager
 from datablockManager import DatablockManager
@@ -37,19 +37,19 @@ class StreamManager():
         self.clientManager = ClientManager(self)
 
 
-    def handlePacket(self, _opcode, _managerCode, _data, _client):
+    def handlePacket(self, _opcode, _data, _client):
     	"""Read the packets and pass to the correct sub manager"""
 
-    	if _managerCode == DATABLOCK_MANAGER:
+    	if _opcode == MSG_CLIENT_DATABLOCK:
     		self.datablockManager.readStreamPacket(_data, _client)
     	
-    	if _managerCode == MOVE_MANAGER:
+    	if _opcode == MSG_CLIENT_MOVE_UPDATE:
     		self.moveManager.readStreamPacket(_data, _client)
 
-    	if _managerCode == GHOST_MANAGER:
+    	if _opcode == GHOST_MANAGER:
     		self.ghostManager.readStreamPacket(_data, _client)
 
-        if _managerCode == MOTD:
+        if _opcode == MOTD:
             self.clientManager.readStreamPacket(_data, _client)
 
 

@@ -35,12 +35,14 @@ class Client():
         self.moveCmds = []
 
 
+
     def start(self):
         self.clientUpdateData = {}
         self.clientUpdateData[self.controlObject.id] = {}
 
     def getState(self):
         self.clientUpdateData[self.controlObject.id]['pos'] = self.controlObject.position
+        #self.clientUpdateData[self.controlObject.id]['time'] = self.controlObject.time
 
         return self.clientUpdateData
 

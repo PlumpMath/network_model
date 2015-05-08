@@ -29,6 +29,7 @@ class ControlObject():
     	self.triggers = []
     	self.lastMoveCmds = []
         self.needsDatablockUpdate = True # First time only then set to False
+        self.time = 0
 
     def doMovement(self, _cmds, _timestep):
         dt = _timestep

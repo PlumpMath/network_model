@@ -37,4 +37,8 @@ class ClientManager():
     	self.streamManager.ghostManager.createClientControlObject(clientId, _clientConnection)
     	# When done create a datablock and send the data to the client.
     	# From there it should only be the movemanager that handles the clients movements for now
+
+
+    def buildLatencyTestPacket(self, _data=[]):
+        pass
     	

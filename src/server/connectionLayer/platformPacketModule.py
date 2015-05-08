@@ -68,7 +68,7 @@ class PlatformPacketModule():
                 break 
             else:
                 # Handle it
-                self.connectionManager.passPacketToStreamMgr(data, opcode, managerCode, datagram.getConnection(), datagram.getLength())
+                self.connectionManager.server.streamMgr.handlePacket(opcode, data, datagram.getConnection())
                 
         return Task.cont
 
@@ -84,7 +84,6 @@ class PlatformPacketModule():
             if self.connectionManager.tcpReader.getData(datagram):
                 data = DatagramIterator(datagram)
                 opcode = data.getUint8()
-                managerCode = data.getUint8()
                 
             else:
                 data = None

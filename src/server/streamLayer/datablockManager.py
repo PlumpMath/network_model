@@ -36,12 +36,15 @@ class DatablockManager():
     	pass
 
 
-    def buildDatablock(self, _clientConnection=None, _dataLength=0, _data=[]):
+    def buildDatablock(self, _clientConnection=None, _dataLength=0, _data=[], _serverTime=0.0):
     	pkt = self.streamManager.buildPacket(2, 2)
         pkt.addUint8(_dataLength)
 
     	for index in range(len(_data)):
             pkt.addString(_data[index])
+
+        # Add server time for client sync
+        pkt.addFloat32(_serverTime)
 
     	return pkt
 
@@ -58,7 +61,9 @@ class DatablockManager():
                 name = self.streamManager.server.clients[client].name
                 currectControlClientIds.append(client +","+ name)
 
-        pkt = self.buildDatablock(_clientConnection, count, currectControlClientIds)
+        # Get the server time this is just a temp pos
+        serverTime = self.streamManager.server.gameMgr.oldTime
+        pkt = self.buildDatablock(_clientConnection, count, currectControlClientIds, serverTime)
 
         self.streamManager.server.connectionMgr.sendPacket(pkt, _clientConnection)
 

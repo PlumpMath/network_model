@@ -39,7 +39,10 @@ class GameManager():
         if self.delay > self.tickTime:
             dt = globalClock.getDt()
             #print "Do Simulation"
+            # Should read input from queue
+            # Process
             self.processControlObjects(dt)
+            # Pack and send updates
             self.broadcastControlObjStates()
             self.delay = 0
 
