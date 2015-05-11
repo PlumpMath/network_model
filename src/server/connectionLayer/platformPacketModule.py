@@ -46,9 +46,9 @@ class PlatformPacketModule():
                 self.connectionManager.tcpReader.addConnection(newConnection)
 
                 clientId = generateUUID()
-                self.connectionManager.server.clients[clientId] = Client(self.connectionManager.server, newConnection, netAddress)
-                self.connectionManager.sendMOTD(newConnection, clientId) # Include First datablock for testing !!! REMOVE LATER !!!
-                print "Server: New Connection from -", str(netAddress.getIpString())
+                self.connectionManager.streamMgr.clientManager.clients[newConnection] = Client(clientId, \
+                                        self.connectionManager.streamMgr.server, newConnection, netAddress)
+                print "Server: New Connection from -", str(netAddress.getIpString()), clientId
 
             else:
                 print "Server: Connection Failed from -", str(netAddress.getIpString())
@@ -62,13 +62,13 @@ class PlatformPacketModule():
         Handle any data from clients by sending it to the Handlers.
         """
         while 1:
-            (datagram, data, opcode, managerCode) = self.tcpNonBlockingRead(self.connectionManager.tcpReader)
+            (datagram, data, opcode) = self.tcpNonBlockingRead(self.connectionManager.tcpReader)
             if opcode is MSG_NONE:
                 # Do nothing or use it as some 'keep_alive' thing.
                 break 
             else:
                 # Handle it
-                self.connectionManager.server.streamMgr.handlePacket(opcode, data, datagram.getConnection())
+                self.connectionManager.streamMgr.unpackPacket(opcode, data, datagram.getConnection())
                 
         return Task.cont
 
@@ -88,19 +88,17 @@ class PlatformPacketModule():
             else:
                 data = None
                 opcode = MSG_NONE
-                managerCode = None
             
         else:
             datagram = None
             data = None
             opcode = MSG_NONE
-            managerCode = None
             
         # Return the datagram to keep a handle on the data
-        return (datagram, data, opcode, managerCode)
+        return (datagram, data, opcode)
 
 
-    # Handle Disconnects
+    # Handle Disconnects TCP
     def handleDisconnects(self, task):
         """This is just a basic idea, and pretty brutal
         TODO: Maybe get the ip of the connection that did the disconnect along with
@@ -109,16 +107,61 @@ class PlatformPacketModule():
         # Handle Disconnections
         
         if self.connectionManager.tcpManager.resetConnectionAvailable():
+            clients = self.connectionManager.streamMgr.clientManager.clients
             connection = PointerToConnection()
             if self.connectionManager.tcpManager.getResetConnection(connection):
                 connection = connection.p()
-                for client in self.connectionManager.server.clients:
-                    if self.connectionManager.server.clients[client].connection == connection:
-                        self.connectionManager.tcpManager.closeConnection(self.connectionManager.server.clients[client].connection)
-                        print self.connectionManager.server.clients[client].netAddress.getIpString(), "Disconnected"
-                        del self.connectionManager.server.clients[client] # This will change, should clean out everything first
+                for client in clients:
+                    if clients[client].connection == connection:
+                        self.connectionManager.tcpManager.closeConnection(clients[client].connection)
+                        print clients[client].netAddress.getIpString(), "Disconnected"
+                        del clients[client] # This will change, should clean out everything first
                         break
 
         return Task.again
+
+
+    ## UDP ##
+
+    # UDP Reader Task
+    def udpReaderTask(self, task):
+        """
+        Handle any data from clients by sending it to the Handlers.
+        """
+        while 1:
+            (datagram, data, opcode) = self.udpNonBlockingRead(self.connectionManager.udpReader)
+            if opcode is MSG_NONE:
+                # Do nothing or use it as some 'keep_alive' thing.
+                break 
+            else:
+                # Handle it
+                self.connectionManager.streamMgr.unpackPacket(opcode, data, datagram.getConnection())
+                
+        return Task.cont
+
+
+    # UDP NonBlockingRead??
+    def udpNonBlockingRead(self, qcr):
+        """
+        Return a datagram collection and type if data is available on
+        the queued connection udpReader
+        """
+        if self.connectionManager.udpReader.dataAvailable():
+            datagram = NetDatagram()
+            if self.connectionManager.udpReader.getData(datagram):
+                data = DatagramIterator(datagram)
+                opcode = data.getUint8()
+                
+            else:
+                data = None
+                opcode = MSG_NONE
+            
+        else:
+            datagram = None
+            data = None
+            opcode = MSG_NONE
+            
+        # Return the datagram to keep a handle on the data
+        return (datagram, data, opcode)
 
 

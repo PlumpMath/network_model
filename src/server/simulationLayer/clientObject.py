@@ -15,12 +15,13 @@ import sys
 
 class Client():
     
-    def __init__(self, _server, _connection, _netAddress):
+    def __init__(self, _id, _server, _connection, _netAddress):
     	print "Client Object Created"
 
     	self.server = _server
 
     	# Net Connection info
+        self.id = _id
     	self.connection = _connection
     	self.netAddress = _netAddress
 

@@ -1,7 +1,0 @@
-#!/usr/bin/python
-
-### NETWORK OPCODES ###
-MOVE_MANAGER = 0
-GHOST_MANAGER = 1
-DATABLOCK_MANAGER = 2
-MOTD = 3

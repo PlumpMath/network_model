@@ -2,14 +2,13 @@
 #----------------------------------------------------------------------#
 
 ## IMPORTS ##
-import os
-import sys
 
 ### PANDA Imports ###
 from direct.task.Task import Task
 from panda3d.core import Datagram
 
 ## Server Imports ##
+from connectionLayer.connectionManager import ConnectionManager
 from connectionLayer.opcodes import *
 from moveManager import MoveManager 
 from ghostManager import GhostManager
@@ -30,57 +29,27 @@ class StreamManager():
     	# Server ref
     	self.server = _server
 
+        # Connection Manager
+        self.connectionMgr = ConnectionManager(self)
+        self.connectionMgr.start()
+
     	# init Sub Managers
+        self.clientManager = ClientManager(self)
     	self.moveManager = MoveManager(self)
     	self.ghostManager = GhostManager(self)
     	self.datablockManager = DatablockManager(self)
-        self.clientManager = ClientManager(self)
+
+        # Setup opcodes and handlers
+        self.unpackOpcodes = {
+            MSG_SERVER_MOVE_CMD : self.moveManager.readStreamPacket
+        }
 
 
-    def handlePacket(self, _opcode, _data, _client):
+    def unpackPacket(self, _opcode, _data, _client):
     	"""Read the packets and pass to the correct sub manager"""
 
-    	if _opcode == MSG_CLIENT_DATABLOCK:
-    		self.datablockManager.readStreamPacket(_data, _client)
-    	
-    	if _opcode == MSG_CLIENT_MOVE_UPDATE:
-    		self.moveManager.readStreamPacket(_data, _client)
-
-    	if _opcode == GHOST_MANAGER:
-    		self.ghostManager.readStreamPacket(_data, _client)
-
-        if _opcode == MOTD:
-            self.clientManager.readStreamPacket(_data, _client)
+    	self.unpackOpcodes[_opcode](_data, _client)
 
 
-    def buildPacket(self, _opcode, _managerCode=None, _data=[]):
-
-    	pkt = Datagram()
-    	pkt.addUint8(_opcode)
-
-        if _managerCode == MOVE_MANAGER:
-            pkt.addUint8(_managerCode)
-
-    	if _managerCode == GHOST_MANAGER:
-    		pkt.addUint8(_managerCode)
-    		self.ghostManager.ghostManagerData(pkt)
-
-        if _managerCode == MOTD:
-            pkt.addUint8(_managerCode)
-            self.motdData(pkt, _data)
-
-        if _managerCode == DATABLOCK_MANAGER:
-            pkt.addUint8(_managerCode)
-
-        return pkt
-
-
-    def motdData(self, _packet, _data):
-        """Forward the server MOTD and the client created ID"""
-        pkt = _packet
-        pkt.addString(self.server.motd)
-        pkt.addString(_data)
-
-        return pkt
 
 

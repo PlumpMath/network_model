@@ -24,6 +24,9 @@ class ClientManager():
         # For simple handling of client packets, link the client connection to the client objects
         self.clientConnectionLink = {}
 
+        # Clients holder for server
+        self.clients = {}
+
     def readStreamPacket(self, _data, _clientConnection):
     	name = _data.getString()
     	clientId = _data.getString()

@@ -2,23 +2,17 @@
 #----------------------------------------------------------------------#
 
 ## IMPORTS ##
-import os
-import sys
 
 ### PANDA Imports ###
 from pandac.PandaModules import QueuedConnectionManager
 from pandac.PandaModules import QueuedConnectionReader
 from pandac.PandaModules import QueuedConnectionListener
 from pandac.PandaModules import ConnectionWriter
-#from direct.distributed.PyDatagram import PyDatagram
-#from direct.distributed.PyDatagramIterator import PyDatagramIterator
 
 from direct.task.Task import Task
 
 ## Server Imports ##
-from config import svrHOSTNAME, svrTCPPORT, svrBACKLOG
 from platformPacketModule import PlatformPacketModule
-from opcodes import MSG_CLIENT_PACKET
 
 ########################################################################
 # The Connection manager deals with the frequency of packet transmission as well 
@@ -27,17 +21,24 @@ from opcodes import MSG_CLIENT_PACKET
 
 class ConnectionManager():
     
-    def __init__(self, _server):
+    def __init__(self, _streamManager):
     	print "Loaded Connection Manager"
 
     	# Ref to base
-    	self.server = _server
+    	self.streamMgr = _streamManager
+        self.cfg = self.streamMgr.server.config
 
 
     def start(self):
     	self.pPacketModule = PlatformPacketModule(self)
-    	self.setupTcp()
+    	
+        # TCP
+        self.setupTcp()
     	self.startTcpTasks()
+
+        # UDP
+        self.setupUdp()
+        self.startUdpTasks()
 
 
     def setupTcp(self):
@@ -50,8 +51,8 @@ class ConnectionManager():
     	self.tcpListener = QueuedConnectionListener(self.tcpManager, 0)
 
     	# TCP Socket
-    	self.tcpSocket = self.tcpManager.openTCPServerRendezvous(svrHOSTNAME, svrTCPPORT,
-    						svrBACKLOG)
+    	self.tcpSocket = self.tcpManager.openTCPServerRendezvous(self.cfg.HOSTNAME, self.cfg.TCPPORT,
+    						self.cfg.BACKLOG)
         #self.tcpSocket.setNoDelay(True)
     	self.tcpListener.addConnection(self.tcpSocket)
 
@@ -61,46 +62,36 @@ class ConnectionManager():
         self.udpManager = QueuedConnectionManager()
         self.udpReader = QueuedConnectionReader(self.udpManager, 0)
         self.udpWriter = ConnectionWriter(self.udpManager, 0)
+        self.udpSocket = self.udpManager.openUDPConnection(self.cfg.UDPPORT)
 
 
     def startTcpTasks(self):
-    	taskMgr.add(self.pPacketModule.tcpListenerTask, "tcpListenerTask", -40)
+    	taskMgr.add(self.pPacketModule.tcpListenerTask, "tcpListenerTask", 50)
         print "TCP Listener Started"
-    	taskMgr.add(self.pPacketModule.tcpReaderTask, "tcpReaderTask", -39)
+    	taskMgr.add(self.pPacketModule.tcpReaderTask, "tcpReaderTask", -40)
         print "TCP Reader Started"
         taskMgr.add(self.pPacketModule.handleDisconnects, "HandleDisconnects", 60)
 
-    ### DELETE ###
-    '''
-        # Handle Datagrams
-    def passPacketToStreamMgr(self, _data, _opcode, _managerCode, _client, _packetSize):
-        """
-        Check for the handle assigned to the opcode.
-        """
-        if _opcode == MSG_CLIENT_PACKET:
-            self.server.streamMgr.handlePacket(_opcode, _managerCode, _data, _client)
-            print "Packet Size:", _packetSize
-            #print "Data:", _data
-
-        else:
-            print "Server: BAD-opcode - %d" % _opcode
-            print "Server: Opcode Data -", _data
-            
-        return
-    '''
+    def startUdpTasks(self):
+        taskMgr.add(self.pPacketModule.udpReaderTask, "udpReaderTask", -39)
+        print "UDP Reader Started"
 
 
+    # Single send
     def sendPacket(self, _packet, _connection):
     	self.tcpWriter.send(_packet, _connection)
 
+    # Every client send
     def broadcastPacket(self, _packet):
-        for client in self.server.clients:
-            conn = self.server.clients[client].connection
+        for client in self.server.streamMgr.clientManager.clients:
+            conn = self.server.streamMgr.clientManager.clients[client].connection
             self.sendPacket(_packet, conn)
 
+    # All except
+    def sendPacketToAllExcept(self, _packet, _except):
 
-    def sendMOTD(self, _connection, _clientId):
-        # send MOTD and Client ID
-        pkt = self.server.streamMgr.buildPacket(2, 3, _clientId)
+        for client in self.server.streamMgr.clientManager.clients:
+            if client != _except:
+                conn = self.server.streamMgr.clientManager.clients[client].connection
+                sendPacket(_packet, conn)
 
-        self.tcpWriter.send(pkt, _connection)

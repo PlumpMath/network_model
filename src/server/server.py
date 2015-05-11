@@ -2,19 +2,14 @@
 #----------------------------------------------------------------------#
 
 ## IMPORTS ##
-import os
 import sys
-import time
 
 ### PANDA Imports ###
 from direct.showbase.ShowBase import ShowBase
-from direct.task.Task import Task
 
 ## Server Imports ##
-from connectionLayer.connectionManager import ConnectionManager
+from config.config import Config
 from streamLayer.streamManager import StreamManager
-from connectionLayer.config import svrMOTD
-from simulationLayer.gameManager import GameManager
 
 ########################################################################
 
@@ -30,22 +25,14 @@ class Server(ShowBase):
         else:
             ShowBase(windowType = 'none')
 
-        # Msg of the day
-        self.motd = svrMOTD
-
-        ## Clients ##
-        self.clients = {}
-
-        ### Setup the base modules ###
-        # Connection Layer
-        self.connectionMgr = ConnectionManager(self)
-        self.connectionMgr.start()
+        ## Load Config ##
+        self.config = Config()
 
         # Stream Layer
         self.streamMgr = StreamManager(self)
         
         # Simulation Layer
-        self.gameMgr = GameManager(self)
+        #self.gameMgr = GameManager(self)
 
 
 server = Server()
