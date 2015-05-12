@@ -18,15 +18,17 @@ from player.moveHandler import LocalHandler
 class Game():
     
     def __init__(self, _client):
-    	print "Game Module Loaded"
+        print "Game Module Loaded"
         self.client = _client
 
-    	# Server tick rate
+    	# client tick rate
         self.tickTime = 1.0 / 20
         self.delay = 0
         self.oldTime = 0
+        self.serverTime = 0
+        self.pingTime = 0
 
-    # This should only be called when the actual game starts.    
+        # This should only be called when the actual game starts.    
         taskMgr.add(self.update, "Client Simulation", -30)
 
         self.playerControlObject = None
@@ -47,13 +49,3 @@ class Game():
             
         return Task.cont
 
-
-    def serverStates(self, _updateData):
-
-        for data in _updateData:
-            if data != self.client.id:
-                for cObj in self.otherPlayerControlObjects:
-                    if cObj.id == data:
-                        #print pos
-                        pos = _updateData[data]['pos']
-                        cObj.model.setPos(pos.getX(), pos.getY(), pos.getZ())

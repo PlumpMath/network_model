@@ -13,7 +13,7 @@ from direct.showbase.ShowBase import ShowBase
 from network.connectionManager import ConnectionManager, MovementManager
 from network.streamManager import StreamManager
 from game import Game
-from gui.connect import connectGUI
+from gui.menu import menuGUI
 
 ########################################################################
 
@@ -38,9 +38,9 @@ class Client(ShowBase):
         self.streamMgr = StreamManager(self)
 
         # Temp Remove after testing!
-        #self.gui = connectGUI(self)
-        #self.gui.show()
-        self.connectionMgr.connectToServer('127.0.0.1', 5001)
+        self.gui = menuGUI(self)
+        self.gui.show()
+        #self.connectionMgr.connectToServer('127.0.0.1', 5001)
 
         # Called when the game actually starts
         self.game = Game(self)
