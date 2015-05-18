@@ -13,7 +13,7 @@ from direct.showbase.ShowBase import ShowBase
 from network.connectionManager import ConnectionManager, MovementManager
 from network.streamManager import StreamManager
 from game import Game
-from gui.menu import menuGUI
+from gui.mainmenu import menuGUI
 
 ########################################################################
 

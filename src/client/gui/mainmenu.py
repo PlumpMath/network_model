@@ -2,6 +2,7 @@
 #----------------------------------------------------------------------#
 
 ## IMPORTS ##
+import sys
 
 
 ### PANDA Imports ###
@@ -10,6 +11,7 @@ from direct.gui.DirectGui import DirectEntry
 from panda3d.core import TextNode
 
 ## Client Imports ##
+from multiplayer import multiplayerGUI
 
 ########################################################################
 
@@ -38,7 +40,7 @@ class menuGUI():
             text = "Multi-Player",
             # Frame
             # Functionality
-            command = '')
+            command = self.handleMultiPlayer)
 
         # create a Options button
         self.menubtn2 = DirectButton(
@@ -60,7 +62,7 @@ class menuGUI():
             text = "Exit",
             # Frame
             # Functionality
-            command = '')
+            command = self.handleExit)
 
         self.hide()
 
@@ -75,6 +77,23 @@ class menuGUI():
         self.menubtn1.hide()
         self.menubtn2.hide()
         self.menubtn3.hide()
+
+
+    def handleSinglePlayer(self):
+        pass
+
+    def handleMultiPlayer(self):
+        # Move to Host / Join-Find games screen
+        mGUI = multiplayerGUI(self.client)
+        self.hide()
+        mGUI.show()
+
+    def handleOptions(self):
+        pass
+
+    def handleExit(self):
+        sys.exit()
+
 
 
 # TESTING
