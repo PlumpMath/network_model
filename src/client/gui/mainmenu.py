@@ -84,7 +84,7 @@ class menuGUI():
 
     def handleMultiPlayer(self):
         # Move to Host / Join-Find games screen
-        mGUI = multiplayerGUI(self.client)
+        mGUI = multiplayerGUI(self)
         self.hide()
         mGUI.show()
 

@@ -11,14 +11,13 @@ from direct.gui.DirectGui import DirectEntry
 from panda3d.core import TextNode
 
 ## Client Imports ##
-from mainmenu import menuGUI
 
 ########################################################################
 
 class multiplayerGUI():
-    def __init__(self, _client=None):
+    def __init__(self, _mainmenu):
         # Ref
-        self.client = _client
+        self.mainmenu = _mainmenu
 
         # create a singlePlayer button
         self.menubtn0 = DirectButton(
@@ -58,10 +57,12 @@ class multiplayerGUI():
     def show(self):
         self.menubtn0.show()
         self.menubtn1.show()
+        self.menubtn3.show()
 
     def hide(self):
         self.menubtn0.hide()
         self.menubtn1.hide()
+        self.menubtn3.hide()
 
 
     def handleHost(self):
@@ -75,9 +76,8 @@ class multiplayerGUI():
         pass
 
     def handleBack(self):
-        menuGUI = menuGUI(self.client)
         self.hide()
-        menuGUI.show()
+        self.mainmenu.show()
 
 
 
